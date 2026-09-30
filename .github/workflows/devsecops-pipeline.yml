@@ -51,3 +51,20 @@ jobs:
 
       - name: Run NPM Audit
         run: npm audit --audit-level=high
+
+  semgrep:
+    name: Semgrep SAST
+    needs: trufflehog
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Semgrep
+        uses: semgrep/semgrep-action@v1
+        env:
+          SEMGREP_RULES: >-
+            p/security-audit
+            p/owasp-top-ten
+            p/javascript
